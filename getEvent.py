@@ -8,7 +8,7 @@ def getEventCount_FromDB_ByIdRange(start, end):
     try:
         conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
         cur=conn.cursor()
-        sql = "select id from Event_history where isLatest='N' and id>" + str(start) + " and id<" + str(end) + " limit 1"
+        sql = "select e.id from OMLiveMatch_History o, Event_history e where o.oddsSource=1 and o.scoreSource=5 and o.isLatest='Y' and e.isLatest='Y' and o.eventId=e.id and e.startDate>'2016-02-03 00:00:00' and e.startDate<'2016-02-03 23:59:59'"
         cur.execute(sql)
 
         autoNum = 0
@@ -33,17 +33,25 @@ def getEventCount_FromDB_ByIdRange(start, end):
 def getMaxModifiedBy_ByEventId(eventId):
     conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
     cur=conn.cursor()
-    sql = "SELECT max(modifiedBy) as modifiedBy FROM TransactionEntity  WHERE eventId =" + str(eventId) + " and (multiplier=false or multiplier is null) and status in (1, 3, 4, 5) and (transactionType = 1 or transactionType=5)"
-    cur.execute(sql)
 
     modifiedBy = 0
+
+    sql = "SELECT max(modifiedBy) as modifiedBy FROM TransactionEntity  WHERE eventId =" + str(eventId) + " and (multiplier=false or multiplier is null) and status in (1, 3, 4, 5) and (transactionType = 1 or transactionType=5)"
+    cur.execute(sql)
     for row in cur.fetchall():
         for r in row:
             modifiedBy = r
+
+    sql = "SELECT max(modifiedBy) as modifiedBy FROM 	TransactionMultiplier  WHERE eventId = " + str(eventId) + " and status in (1, 3, 4, 5)"
+    cur.execute(sql)
+    for row in cur.fetchall():
+        for r in row:
+            if (r>modifiedBy):
+                modifiedBy = r
 
     cur.close()
     conn.close()
     return modifiedBy
 
-getMaxModifiedBy_ByEventId(22833794)
+getEventCount_FromDB_ByIdRange(0, 1)
 
