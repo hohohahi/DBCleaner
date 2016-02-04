@@ -1,8 +1,8 @@
 import MySQLdb
 
 ip = '10.0.10.50'
-user = 'om'
-passwd = 'bestbrainer'
+user = 'yw'
+passwd = 'yuwei888k'
 
 def getEventCount_FromDB_ByIdRange(start, end):
     try:
