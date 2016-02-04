@@ -16,7 +16,7 @@ def getEventCount_FromDB_ByIdRange(start, end):
         for row in cur.fetchall():
             for r in row:
                 eventId = r
-                modifiedBy = getMaxModifiedBy_ByEventId(eventId)
+                modifiedBy = getMaxModifiedBy_ByEventId(eventId, cur)
                 if (modifiedBy>0):
                     manualNum = manualNum + 1
                 else:
@@ -30,10 +30,7 @@ def getEventCount_FromDB_ByIdRange(start, end):
     except MySQLdb.Error,e:
         print "Mysql Error %d: %s" % (e.args[0], e.args[1])
 
-def getMaxModifiedBy_ByEventId(eventId):
-    conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
-    cur=conn.cursor()
-
+def getMaxModifiedBy_ByEventId(eventId, cur):
     modifiedBy = 0
 
     sql = "SELECT max(modifiedBy) as modifiedBy FROM TransactionEntity  WHERE eventId =" + str(eventId) + " and (multiplier=false or multiplier is null) and status in (1, 3, 4, 5) and (transactionType = 1 or transactionType=5)"
@@ -49,8 +46,6 @@ def getMaxModifiedBy_ByEventId(eventId):
             if (r>modifiedBy):
                 modifiedBy = r
 
-    cur.close()
-    conn.close()
     return modifiedBy
 
 getEventCount_FromDB_ByIdRange(0, 2)
