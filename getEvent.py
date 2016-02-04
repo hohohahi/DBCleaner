@@ -3,12 +3,16 @@ import MySQLdb
 ip = '10.0.10.50'
 user = 'yw'
 passwd = 'yuwei888k'
+startDate = '2016-01-28 00:00:00'
+endDate = '2016-02-04 23:59:59'
 
-def getEventCount_FromDB_ByIdRange(start, end):
+def getEventCount_FromDB_ByIdRange(startDate, endDate, discipline):
     try:
         conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
         cur=conn.cursor()
-        sql = "select e.id from OMLiveMatch_History o, Event_history e where o.oddsSource=1 and o.scoreSource=5 and o.isLatest='Y' and e.isLatest='Y' and o.eventId=e.id"
+        sql = "select e.id from OMLiveMatch_History o, Event_history e where o.oddsSource=1 and o.scoreSource=5 and o.isLatest='Y' and e.isLatest='Y' " \
+              "and o.eventId=e.id and e.disciplineId=" + str(discipline) + " and e.startDate>" + startDate + " and e.startDate<" + endDate
+
         cur.execute(sql)
 
         autoNum = 0
@@ -48,5 +52,12 @@ def getMaxModifiedBy_ByEventId(eventId, cur):
 
     return modifiedBy
 
-getEventCount_FromDB_ByIdRange(0, 2)
+print 'Football'
+getEventCount_FromDB_ByIdRange(startDate, endDate, 1)
+
+print 'Tennis'
+getEventCount_FromDB_ByIdRange(startDate, endDate, 3)
+
+print 'Basketball'
+getEventCount_FromDB_ByIdRange(startDate, endDate, 8)
 
