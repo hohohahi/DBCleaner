@@ -53,5 +53,5 @@ def getMaxModifiedBy_ByEventId(eventId):
     conn.close()
     return modifiedBy
 
-getEventCount_FromDB_ByIdRange(0, 1)
+getEventCount_FromDB_ByIdRange(0, 2)
 
