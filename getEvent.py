@@ -42,7 +42,7 @@ def getMaxModifiedBy_ByEventId(eventId):
         for r in row:
             modifiedBy = r
 
-    sql = "SELECT max(modifiedBy) as modifiedBy FROM 	TransactionMultiplier  WHERE eventId = " + str(eventId) + " and status in (1, 3, 4, 5)"
+    sql = "SELECT max(modifiedBy) as modifiedBy FROM TransactionMultiplier  WHERE eventId = " + str(eventId) + " and status in (1, 3, 4, 5)"
     cur.execute(sql)
     for row in cur.fetchall():
         for r in row:
