@@ -3,7 +3,7 @@ import MySQLdb
 ip = '10.0.10.50'
 user = 'yw'
 passwd = 'yuwei888k'
-startDate = "'2016-01-28 00:00:00'"
+startDate = "'2015-01-28 00:00:00'"
 endDate = "'2016-02-04 23:59:59'"
 
 def getEventCount_FromDB_ByIdRange(startDate, endDate, discipline):
