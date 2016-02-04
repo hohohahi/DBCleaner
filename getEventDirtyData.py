@@ -27,7 +27,7 @@ def getEventCount_FromDB_ByIdRange(start, end, cur):
                     print assembleMessage(start, end, count)
 
                     if (count>deleteThreshold):
-                        print "call procedure " + sp + " to clean data. start:" + str(start) + "--end:" + end
+                        print "call procedure " + sp + " to clean data. start:" + str(start) + "--end:" + str(end)
                         startTime = time.time()
                         cur.callproc(sp, (start, end)) #参数与存储过程有关
                         endTime = time.time()
