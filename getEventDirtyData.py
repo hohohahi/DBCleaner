@@ -6,7 +6,7 @@ user = 'yw'
 passwd = 'yuwei888k'
 warnThreshold = 10000
 deleteThreshold = 100000
-step = 1
+step = 10
 #210000000 217479009
 startId = 216536000 #210000000  216536000--216536100
 endId = 216536100
