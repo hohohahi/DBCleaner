@@ -34,7 +34,7 @@ def assembleMessage(startId, endId, count):
     message = str(startId) + '--' + str(endId) + '--' + count
 
 def queryEventCount_ByIdRange(startId, endId):
-    if (startId < endId):
+    if (endId < startId):
         print "startId is smaller than the endId. startId:" + str(startId) + "--endId:" + str(endId)
         return
 
