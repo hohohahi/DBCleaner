@@ -6,7 +6,7 @@ user = 'yw'
 passwd = 'yuwei888k'
 warnThreshold = 10000
 deleteThreshold = 100000
-step = 10000
+step = 1000
 startId = 210000000 #210000000
 endId = 217479009
 sp = "sp_clear_Event_History"
@@ -25,14 +25,14 @@ def getEventCount_FromDB_ByIdRange(start, end, cur):
                 count = r
                 if (count>warnThreshold):
                     print assembleMessage(start, end, count)
-
+                    """
                     if (count>deleteThreshold):
                         print "call procedure " + sp + " to clean data. start:" + str(start) + "--end:" + str(end)
                         startTime = time.time()
                         cur.callproc(sp, (start, end))
                         endTime = time.time()
                         print "call end. spentTime:" + str(endTime-startTime)
-
+                    """
     except MySQLdb.Error,e:
         print "Mysql Error %d: %s" % (e.args[0], e.args[1])
 
