@@ -1,12 +1,15 @@
 import MySQLdb
+import time
 
 ip = '10.0.10.50'
 user = 'yw'
 passwd = 'yuwei888k'
-threshold = 10000
+warnThreshold = 10000
+deleteThreshold = 100000
 step = 10000
-startId = 217409009 #210000000
+startId = 210000000 #210000000
 endId = 217479009
+sp = "sp_clear_Event_History"
 
 #select count(*) from Event_history where id<210000000 and isLatest='N';   --0
 #select max(id) from Event_history;  -- 217479009
@@ -20,14 +23,22 @@ def getEventCount_FromDB_ByIdRange(start, end, cur):
         for row in cur.fetchall():
             for r in row:
                 count = r
-                if (count>threshold):
+                if (count>warnThreshold):
                     print assembleMessage(start, end, count)
+
+                    if (count>deleteThreshold):
+                        print "call procedure " + sp + " to clean data. start:" + str(start) + "--end:" + end
+                        startTime = time.time()
+                        cur.callproc(sp, (start, end)) #参数与存储过程有关
+                        endTime = time.time()
+                        print "call end. spentTime:" + str(endTime-startTime)
 
     except MySQLdb.Error,e:
         print "Mysql Error %d: %s" % (e.args[0], e.args[1])
 
 def assembleMessage(startId, endId, count):
     message = str(startId) + '--' + str(endId) + '--' + str(count)
+    return message
 
 def queryEventCount_ByIdRange(startId, endId):
     if (endId < startId):
