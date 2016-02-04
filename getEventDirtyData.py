@@ -10,10 +10,8 @@ endId = 217479009
 
 #select count(*) from Event_history where id<210000000 and isLatest='N';   --0
 #select max(id) from Event_history;  -- 217479009
-def getEventCount_FromDB_ByIdRange(start, end):
+def getEventCount_FromDB_ByIdRange(start, end, cur):
     try:
-        conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
-        cur=conn.cursor()
         sql = "select count(*) from Event_history where isLatest='N' and id>" + str(start) + " and id<" + str(end)
         cur.execute(sql)
 
@@ -25,29 +23,33 @@ def getEventCount_FromDB_ByIdRange(start, end):
                 if (count>threshold):
                     print assembleMessage(start, end, count)
 
-        cur.close()
-        conn.close()
     except MySQLdb.Error,e:
         print "Mysql Error %d: %s" % (e.args[0], e.args[1])
 
 def assembleMessage(startId, endId, count):
-    message = str(startId) + '--' + str(endId) + '--' + count
+    message = str(startId) + '--' + str(endId) + '--' + str(count)
 
 def queryEventCount_ByIdRange(startId, endId):
     if (endId < startId):
         print "startId is smaller than the endId. startId:" + str(startId) + "--endId:" + str(endId)
         return
 
+    conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
+    cur=conn.cursor()
+
     if (endId - startId < step):
         print "the dif is smalll than step. run the actual value."
-        getEventCount_FromDB_ByIdRange(startId, endId)
+        getEventCount_FromDB_ByIdRange(startId, endId, cur)
     else:
         startValue = startId
         endValue = startValue + step
         while(endValue<endId):
-            getEventCount_FromDB_ByIdRange(startValue, endValue)
+            getEventCount_FromDB_ByIdRange(startValue, endValue, cur)
             startValue = endValue
             endValue = startValue + step
+
+    cur.close()
+    conn.close()
 
 print "startId:" + str(startId) + "--endId:" +str(endId)
 queryEventCount_ByIdRange(startId, endId)
