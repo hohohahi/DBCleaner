@@ -38,7 +38,7 @@ def queryEventCount_ByIdRange(startId, endId):
         print "startId is smaller than the endId. startId:" + str(startId) + "--endId:" + str(endId)
         return
 
-    if (startId - endId < step):
+    if (endId - startId < step):
         print "the dif is smalll than step. run the actual value."
         getEventCount_FromDB_ByIdRange(startId, endId)
     else:
