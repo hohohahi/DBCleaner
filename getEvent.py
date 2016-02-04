@@ -8,7 +8,7 @@ def getEventCount_FromDB_ByIdRange(start, end):
     try:
         conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
         cur=conn.cursor()
-        sql = "select e.id from OMLiveMatch_History o, Event_history e where o.oddsSource=1 and o.scoreSource=5 and o.isLatest='Y' and e.isLatest='Y' and o.eventId=e.id and e.startDate>'2016-02-03 00:00:00' and e.startDate<'2016-02-03 23:59:59'"
+        sql = "select e.id from OMLiveMatch_History o, Event_history e where o.oddsSource=1 and o.scoreSource=5 and o.isLatest='Y' and e.isLatest='Y' and o.eventId=e.id"
         cur.execute(sql)
 
         autoNum = 0
