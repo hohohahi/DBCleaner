@@ -52,12 +52,12 @@ def getMaxModifiedBy_ByEventId(eventId, cur):
 
     return modifiedBy
 
-print 'Football'
+print 'Football from ' + startDate + ' to ' + endDate
 getEventCount_FromDB_ByIdRange(startDate, endDate, 1)
 
-print 'Tennis'
+print 'Tennis from ' + startDate + ' to ' + endDate
 getEventCount_FromDB_ByIdRange(startDate, endDate, 3)
 
-print 'Basketball'
+print 'Basketball from ' + startDate + ' to ' + endDate
 getEventCount_FromDB_ByIdRange(startDate, endDate, 8)
 
