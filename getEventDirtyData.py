@@ -8,8 +8,8 @@ warnThreshold = 10000
 deleteThreshold = 100000
 step = 10
 #210000000 217479009
-startId = 216536000 #210000000  216536000--216536100
-endId = 216536100
+startId = 210000000 #210000000  216536000--216536100
+endId = 217479009
 sp = "sp_clear_Event_History"
 
 #select count(*) from Event_history where id<210000000 and isLatest='N';   --0
