@@ -22,7 +22,7 @@ def sendEmail(subject, content):
     msg = message.as_string()
 
     sm = smtplib.SMTP(smtpserver,port=587,timeout=20)
-    sm.set_debuglevel(1)
+    #sm.set_debuglevel(1)
     sm.starttls()
     sm.login(username, password)
 
