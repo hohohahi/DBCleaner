@@ -1,13 +1,13 @@
 import MySQLdb
 import time
 
-ip = '10.0.10.110'
+ip = '10.0.10.50'
 user = 'yw'
 passwd = 'yuwei888k'
 deleteOneOutcomeSql = "delete from Outcome_history where isLatest='N' limit 1"
 sleepInteval = 1
 deleteNum = 0
-deleteThreshold = 5
+deleteThreshold = 1000
 
 try:
     conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
