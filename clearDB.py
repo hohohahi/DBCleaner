@@ -1,0 +1,29 @@
+import MySQLdb
+import time
+
+ip = '10.0.10.110'
+user = 'yw'
+passwd = 'yuwei888k'
+deleteOneOutcomeSql = "delete from Outcome_history where isLatest='N' limit 1"
+sleepInteval = 10
+deleteNum = 0
+deleteThreshold = 5
+
+try:
+    conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
+    cur=conn.cursor()
+    while True:
+        print time.strftime('%H:%M:%S',time.localtime())
+        cur.execute(deleteOneOutcomeSql)
+        deleteNum = deleteNum + 1
+        if (deleteNum > deleteThreshold):
+            print("exit while circl. deleteNum:" + deleteNum + "--deleteThreshold:" + deleteThreshold)
+            break
+        time.sleep(sleepInteval)
+
+    cur.close()
+    conn.close()
+except MySQLdb.Error,e:
+    print "Mysql Error %d: %s" % (e.args[0], e.args[1])
+
+

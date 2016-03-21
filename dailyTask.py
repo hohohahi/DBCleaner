@@ -7,4 +7,5 @@ officeTradeData = parseDailyData.getDailyTradeNumber()
 dailyPrice = 'Current price:' + getCurrentDepartmentPrice.getDailyPrice()
 
 output = officeTradeData + '-----' +  dailyPrice
-tool.sendEmail.sendEmail(output, output)
+print output;
+#tool.sendEmail.sendEmail(output, output)
