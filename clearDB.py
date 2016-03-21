@@ -13,7 +13,7 @@ try:
     conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
     cur=conn.cursor()
     while True:
-        print time.strftime('%H:%M:%S',time.localtime()) + " start.";
+        print time.strftime('%H:%M:%S',time.localtime()) + " start: " + str(deleteNum);
         cur.execute(deleteOneOutcomeSql)
         deleteNum = deleteNum + 1
         if (deleteNum > deleteThreshold):
