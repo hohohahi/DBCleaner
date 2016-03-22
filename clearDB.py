@@ -7,7 +7,7 @@ passwd = 'yuwei888k'
 deleteOneOutcomeSql = "delete from Outcome_history where isLatest='N' limit 1000"
 sleepInteval = 1
 deleteNum = 0
-deleteThreshold = 30
+deleteThreshold = 100
 
 try:
     conn=MySQLdb.connect(host=ip,user=user,passwd=passwd,db='oddsmatrixdb',port=3306)
