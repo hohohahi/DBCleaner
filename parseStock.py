@@ -118,6 +118,6 @@ while (index < 604000):
     historyValue = getHistoryData(countedDay, index);
     finalValue = (float(realValue) + float(historyValue))/10000;
 
-    index = index + 1;
     if (finalValue > 5):
         print 'stock:' + str(index) + '--CYW:' + str(finalValue);
+    index = index + 1;
