@@ -107,7 +107,7 @@ def getRealData(stockId):
 
     return currentValue
 
-index = 0
+index = 600000
 while (index < 604000):
     try:
         realValue = getRealData(index);
