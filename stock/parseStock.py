@@ -107,22 +107,24 @@ def getRealData(stockId):
 
     return currentValue
 
-index = 600000
-while (index < 604000):
-    try:
-        realValue = getRealData(index);
+def checkShangHaiIndex():
+    index = 600000
+    while (index < 604000):
+        try:
+            realValue = getRealData(index);
 
-        if (realValue == 0):
-            index = index + 1;
-            continue
+            if (realValue == 0):
+                index = index + 1;
+                continue
 
-        historyValue = getHistoryData(countedDay, index);
-        finalValue = (float(realValue) + float(historyValue))/10000;
+            historyValue = getHistoryData(countedDay, index);
+            finalValue = (float(realValue) + float(historyValue))/10000;
 
-        if (finalValue > 5):
-            print 'stock:' + str(index) + '--CYW:' + str(finalValue);
-    except Exception,ex:
-        print Exception,":",ex
-        print 'Error index:' + str(index)
+            if (finalValue > 5):
+                print 'stock:' + str(index) + '--CYW:' + str(finalValue);
+        except Exception,ex:
+            print Exception,":",ex
+            print 'Error index:' + str(index)
 
-    index = index + 1;
+        index = index + 1;
+
