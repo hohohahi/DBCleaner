@@ -22,16 +22,11 @@ def queryRealtimeData(stock):
     return httpAccess(url);
 
 def httpAccess(url):
+    print url
     req = urllib2.Request(url)
     res_data = urllib2.urlopen(req)
     res = res_data.read()
     return res
-
-def printDetails(timestamp):
-    timeStruct = time.localtime(timestamp)
-    print time.strftime('%Y',timeStruct)
-    print time.strftime('%m',timeStruct)
-    print time.strftime('%d',timeStruct)
 
 def calculate(high, low, open, close, volume):
     high_int = float(high);
@@ -107,22 +102,15 @@ def getRealData(stockId):
 
     return currentValue
 
-index = 0
-while (index < 604000):
-    try:
-        realValue = getRealData(index);
+index = 600389
+realValue = getRealData(index);
 
-        if (realValue == 0):
-            index = index + 1;
-            continue
-
-        historyValue = getHistoryData(countedDay, index);
-        finalValue = (float(realValue) + float(historyValue))/10000;
-
-        if (finalValue > 5):
-            print 'stock:' + str(index) + '--CYW:' + str(finalValue);
-    except Exception,ex:
-        print Exception,":",ex
-        print 'Error index:' + str(index)
-
+if (realValue == 0):
     index = index + 1;
+
+historyValue = getHistoryData(countedDay, index);
+finalValue = (float(realValue) + float(historyValue))/10000;
+
+if (finalValue > 5):
+    print 'stock:' + str(index) + '--CYW:' + str(finalValue);
+index = index + 1;
