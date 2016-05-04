@@ -93,7 +93,7 @@ def getRealData(stockTagForReal):
     dataList = data.split(',');
 
     if (len(dataList) < 3):
-        print 'Warning: missing realtime details, stockId:' + str(stockId)
+        print 'Warning: missing realtime details, stockId:' + stockTagForReal
         return 0;
 
     open =  dataList[1]
@@ -170,7 +170,7 @@ def checkShenZhenIndex(stockList):
             print Exception,":",ex
             print 'Error index:' + str(stock)
 
-stockList = loadStockList(shangHaifileName)
-checkShangHaiIndex(stockList)
-#stockList = loadStockList(shenZhenfileName)
-#checkShenZhenIndex(stockList)
+#stockList = loadStockList(shangHaifileName)
+#checkShangHaiIndex(stockList)
+stockList = loadStockList(shenZhenfileName)
+checkShenZhenIndex(stockList)
