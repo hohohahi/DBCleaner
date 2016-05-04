@@ -5,8 +5,14 @@ import datetime
 import web.parseWeb
 import tool.sendEmail
 from bs4 import BeautifulSoup
+import re
+import os
+import time
 
 countedDay = 10
+shangHaifileName = 'shangHaiStockList.txt'
+shenZhenfileName = 'shenZhenStockList.txt'
+splitter = '$'
 
 def queryHistoryData(fromYear, fromMonth, fromDay, toYear, toMonth, toDay, stock):
     url = "http://ichart.yahoo.com/table.csv?s=" \
@@ -26,12 +32,6 @@ def httpAccess(url):
     res_data = urllib2.urlopen(req)
     res = res_data.read()
     return res
-
-def printDetails(timestamp):
-    timeStruct = time.localtime(timestamp)
-    print time.strftime('%Y',timeStruct)
-    print time.strftime('%m',timeStruct)
-    print time.strftime('%d',timeStruct)
 
 def calculate(high, low, open, close, volume):
     high_int = float(high);
@@ -53,7 +53,7 @@ def calculate(high, low, open, close, volume):
 
     return var4;
 
-def getHistoryData(countedDay, stockId):
+def getHistoryData(countedDay, stockTag):
     currentTime = time.mktime(time.gmtime()) + 3600*8
     toTime = currentTime - 24*60*60
     toTimeStruct = time.localtime(toTime)
@@ -67,7 +67,7 @@ def getHistoryData(countedDay, stockId):
     fromTimeMonth = time.strftime('%m',fromTimeStruct)
     fromTimeDay = time.strftime('%d',fromTimeStruct)
 
-    historyData = queryHistoryData(fromTimeYear, str(int(fromTimeMonth)-1), fromTimeDay, toTimeYear, str(int(toTimeMonth)-1), toTimeDay, str(stockId) + '.SS');
+    historyData = queryHistoryData(fromTimeYear, str(int(fromTimeMonth)-1), fromTimeDay, toTimeYear, str(int(toTimeMonth)-1), toTimeDay, stockTag);
     list = historyData.split('\n')
 
     validNum = 0
@@ -90,8 +90,8 @@ def getHistoryData(countedDay, stockId):
                 validNum = validNum + 1
     return totalValue
 
-def getRealData(stockId):
-    data = queryRealtimeData('sh' + str(stockId));
+def getRealData(stockTagForReal):
+    data = queryRealtimeData(stockTagForReal);
     dataList = data.split(',');
 
     if (len(dataList) < 3):
@@ -107,24 +107,72 @@ def getRealData(stockId):
 
     return currentValue
 
-def checkShangHaiIndex():
-    index = 600000
-    while (index < 604000):
+def loadStockList(filename):
+    fp = open(filename,'r')
+    try:
+        all_the_text = fp.read()
+        stockList = all_the_text.split(splitter)
+    finally:
+        fp.close( )
+
+    return stockList
+
+def getStockTagForShangHaiHistory(stockId):
+    stockTag = stockId + '.SS'
+    return stockTag
+
+def getStockTagForShangHaiReal(stockId):
+    stockTag = 'sh' + stockId
+    return stockTag
+
+def getStockTagForShenZhenReal(stockId):
+    stockTag = 'sz' + stockId
+    return stockTag
+
+def getStockTagForShenZhenHistory(stockId):
+    stockTag = stockId + '.SZ'
+    return stockTag
+
+def checkShangHaiIndex(stockList):
+    for stock in stockList:
         try:
-            realValue = getRealData(index);
+            stockTagForReal = getStockTagForShangHaiReal(stock)
+            realValue = getRealData(stockTagForReal);
 
             if (realValue == 0):
-                index = index + 1;
                 continue
 
-            historyValue = getHistoryData(countedDay, index);
+            stockTagForHistory = getStockTagForShangHaiHistory(stock)
+            historyValue = getHistoryData(countedDay, stockTagForHistory);
             finalValue = (float(realValue) + float(historyValue))/10000;
 
             if (finalValue > 5):
-                print 'stock:' + str(index) + '--CYW:' + str(finalValue);
+                print 'stock:' + str(stock) + '--CYW:' + str(finalValue);
         except Exception,ex:
             print Exception,":",ex
-            print 'Error index:' + str(index)
+            print 'Error index:' + str(stock)
 
-        index = index + 1;
+def checkShenZhenIndex(stockList):
+    for stock in stockList:
+        print stock
+        try:
+            stockTagForReal = getStockTagForShenZhenReal(stock)
+            realValue = getRealData(stockTagForReal);
 
+            if (realValue == 0):
+                continue
+
+            stockTagForHistory = getStockTagForShenZhenHistory(stock)
+            historyValue = getHistoryData(countedDay, stockTagForHistory);
+            finalValue = (float(realValue) + float(historyValue))/10000;
+
+            if (finalValue > 5):
+                print 'stock:' + str(stock) + '--CYW:' + str(finalValue);
+        except Exception,ex:
+            print Exception,":",ex
+            print 'Error index:' + str(stock)
+
+stockList = loadStockList(shangHaifileName)
+checkShangHaiIndex(stockList)
+#stockList = loadStockList(shenZhenfileName)
+#checkShenZhenIndex(stockList)
