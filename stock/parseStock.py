@@ -152,7 +152,6 @@ def checkShangHaiIndex(stockList):
 
 def checkShenZhenIndex(stockList):
     for stock in stockList:
-        print stock
         try:
             stockTagForReal = getStockTagForShenZhenReal(stock)
             realValue = getRealData(stockTagForReal);
