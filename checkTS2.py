@@ -20,7 +20,7 @@ prod_env3_IPs = ["10.3.239.11", "10.3.239.14", "10.3.239.12", "10.3.239.13"]
 def exec_command_ByIP(ip):
     command = 'curl '+ ip + ':8888  --connect-timeout 5'
     output = os.popen(command)
-    print (output.read())
+    return (output.read())
 
 def parseRtnMessage(message):
     rtnStatus = _Status_Parse_Normal;
@@ -66,8 +66,8 @@ def check():
     checkByIP(prod_env3_IPs[1], 'Prod Env3 2');
     checkByIP(prod_env3_IPs[2], 'Prod Env3 3');
     checkByIP(prod_env3_IPs[3], 'Prod Env3 4');
-    
-timer = threading.Timer(60, check)
+
+timer = threading.Timer(5, check)
 timer.start()
 
 #checkByIP(devIP, 'dev');
