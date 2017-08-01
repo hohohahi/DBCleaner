@@ -1,3 +1,4 @@
+import http.client
 import os
 import json
 import tool.sendEmail
@@ -17,11 +18,18 @@ stageIP = "10.3.238.21"
 prod_env1_IPs = ["10.3.240.14", "10.3.240.11", "10.3.240.13", "10.3.240.12"]
 prod_env3_IPs = ["10.3.239.11", "10.3.239.14", "10.3.239.12", "10.3.239.13"]
 timer = threading.Timer
+_port_ = 8888
+_check_interval_ = 30
 
 def exec_command_ByIP(ip):
     command = 'curl '+ ip + ':8888  --connect-timeout 5'
     output = os.popen(command)
     return (output.read())
+
+def httpCheckStatus(ip):
+    conn = http.client.HTTPConnection(devIP, _port_)
+    conn.request("GET", "/")
+    return conn.getresponse().read()
 
 def parseRtnMessage(message):
     rtnStatus = _Status_Parse_Normal;
@@ -43,7 +51,7 @@ def parseRtnMessage(message):
     return statusValue
 
 def checkByIP(ip, tag):
-    rtnMessage = exec_command_ByIP(ip)
+    rtnMessage = httpCheckStatus(ip)
     rtnCode = parseRtnMessage(rtnMessage)
     if (_Status_Parse_Normal != rtnCode):
         title = tag + " " + ip + " Alert!!!"
@@ -51,8 +59,13 @@ def checkByIP(ip, tag):
         tool.sendEmail.sendEmail(title, body)
 
 def check(inc):
+    s.enter(inc, 0, check, (inc,))
     checkByIP(devIP, 'dev');
+
+    """
     checkByIP(stageIP, 'stage');
+
+    
 
     checkByIP(prod_env1_IPs[0], 'Prod Env1 1');
     checkByIP(prod_env1_IPs[1], 'Prod Env1 2');
@@ -63,12 +76,12 @@ def check(inc):
     checkByIP(prod_env3_IPs[1], 'Prod Env3 2');
     checkByIP(prod_env3_IPs[2], 'Prod Env3 3');
     checkByIP(prod_env3_IPs[3], 'Prod Env3 4');
+"""
 
-    s.enter(inc, 0, check, (inc,))
 
 s = sched.scheduler(time.time,time.sleep)
 
-def mymain(inc=300):
+def mymain(inc=_check_interval_):
   s.enter(0,0,check,(inc,))
   s.run()
 
