@@ -52,6 +52,8 @@ def parseRtnMessage(message):
 
 def checkByIP(ip, tag):
     rtnMessage = ""
+    rtnCode = _Status_Parse_Normal
+    
     try:
         rtnMessage = httpCheckStatus(ip)
     except Exception:
