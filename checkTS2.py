@@ -51,8 +51,14 @@ def parseRtnMessage(message):
     return statusValue
 
 def checkByIP(ip, tag):
-    rtnMessage = httpCheckStatus(ip)
-    rtnCode = parseRtnMessage(rtnMessage)
+    try:
+        rtnMessage = httpCheckStatus(ip)
+    except Exception:
+        rtnCode = _Status_Dead_
+
+    if (_Status_Parse_Normal == rtnCode):
+        rtnCode = parseRtnMessage(rtnMessage)
+        
     if (_Status_Parse_Normal != rtnCode):
         title = tag + " " + ip + " Alert!!!"
         body = "Code:" + str(rtnCode) + ", message:" + rtnMessage
