@@ -67,7 +67,7 @@ def check():
     checkByIP(prod_env3_IPs[2], 'Prod Env3 3');
     checkByIP(prod_env3_IPs[3], 'Prod Env3 4');
 
-timer = threading.Timer(5, check)
+timer = threading.Timer(60, check)
 timer.start()
 
 #checkByIP(devIP, 'dev');
