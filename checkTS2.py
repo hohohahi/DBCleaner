@@ -16,6 +16,7 @@ devIP = "10.3.238.20"
 stageIP = "10.3.238.21"
 prod_env1_IPs = ["10.3.240.14", "10.3.240.11", "10.3.240.13", "10.3.240.12"]
 prod_env3_IPs = ["10.3.239.11", "10.3.239.14", "10.3.239.12", "10.3.239.13"]
+timer = threading.Timer
 
 def exec_command_ByIP(ip):
     command = 'curl '+ ip + ':8888  --connect-timeout 5'
@@ -48,12 +49,8 @@ def checkByIP(ip, tag):
         title = tag + " " + ip + " Alert!!!"
         body = "Code:" + str(rtnCode) + ", message:" + rtnMessage
         tool.sendEmail.sendEmail(title, body)
-    else:
-        title = tag + " " + ip + " Good"
-        body = "..."
-        tool.sendEmail.sendEmail(title, body)
 
-def check():
+def check(inc):
     checkByIP(devIP, 'dev');
     checkByIP(stageIP, 'stage');
 
@@ -67,8 +64,16 @@ def check():
     checkByIP(prod_env3_IPs[2], 'Prod Env3 3');
     checkByIP(prod_env3_IPs[3], 'Prod Env3 4');
 
-timer = threading.Timer(60, check)
-timer.start()
+    s.enter(inc, 0, check, (inc,))
+
+s = sched.scheduler(time.time,time.sleep)
+
+def mymain(inc=300):
+  s.enter(0,0,check,(inc,))
+  s.run()
+
+if __name__ == "__main__":
+    mymain()
 
 #checkByIP(devIP, 'dev');
 #exec_command()
