@@ -11,8 +11,8 @@ smtpserver = 'smtp.qq.com'
 username = '18800761'
 password = 'yuwei654321K.com'
 
-from_addr = '18800761@qq.com'
-to_addr = '18800761@qq.com'
+from_addr = '18975811415@qq.com'
+to_addr = '18975811415@qq.com'
 
 def sendEmail(subject, content):
     message = MIMEText(content.encode('utf-8'), 'plain', 'utf-8')
