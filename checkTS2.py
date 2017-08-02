@@ -12,6 +12,7 @@ _Status_Error_NotContainedElement_ = 3
 _Status_Parse_Error_ = 2
 _Status_Parse_Warning = 1
 _Status_Parse_Normal = 0
+_Status_Translation_ = ["Working fine.", "Warning.", "Critical Error.", "Not Contained Element.", "Exception happened.", "Node dead."]
 
 devIP = "10.3.238.20"
 stageIP = "10.3.238.21"
@@ -53,7 +54,7 @@ def parseRtnMessage(message):
 def checkByIP(ip, tag):
     rtnMessage = ""
     rtnCode = _Status_Parse_Normal
-    
+
     try:
         rtnMessage = httpCheckStatus(ip)
     except Exception:
@@ -63,9 +64,17 @@ def checkByIP(ip, tag):
         rtnCode = parseRtnMessage(rtnMessage)
 
     if (_Status_Parse_Normal != rtnCode):
-        title = tag + " " + ip + " Alert!!!"
-        body = "Code:" + str(rtnCode) + ", message:" + rtnMessage
+        title = assembleEmailTitle(tag, ip)
+        body = assembleEmailBody(rtnCode, rtnMessage)
         tool.sendEmail.sendEmail(title, body)
+
+def assembleEmailTitle(tag, ip):
+    title = tag + " " + ip + " Alert!!!"
+    return title
+
+def assembleEmailBody(rtnCode, rtnMessage):
+    body = _Status_Translation_[rtnCode] + ", message:" + rtnMessage
+    return body
 
 def check(inc):
     s.enter(inc, 0, check, (inc,))
