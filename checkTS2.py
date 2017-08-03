@@ -16,7 +16,7 @@ _Status_Parse_Normal = 0
 _Status_Translation_ = ["Working fine.", "Warning.", "Critical Error.", "Not Contained Element.", "Exception happened.", "Node dead."]
 
 devIP = "10.3.238.20"
-stageIP = "10.3.238.215"
+stageIP = "10.3.238.21"
 prod_env1_IPs = ["10.3.240.14", "10.3.240.11", "10.3.240.13", "10.3.240.12"]
 prod_env3_IPs = ["10.3.239.11", "10.3.239.14", "10.3.239.12", "10.3.239.13"]
 timer = threading.Timer
