@@ -1,4 +1,4 @@
-import httplib
+import http.client
 import os
 import json
 import tool.sendEmail
@@ -15,7 +15,7 @@ _Status_Parse_Normal = 0
 _Status_Translation_ = ["Working fine.", "Warning.", "Critical Error.", "Not Contained Element.", "Exception happened.", "Node dead."]
 
 devIP = "10.3.238.20"
-stageIP = "10.3.238.21"
+stageIP = "10.3.238.215"
 prod_env1_IPs = ["10.3.240.14", "10.3.240.11", "10.3.240.13", "10.3.240.12"]
 prod_env3_IPs = ["10.3.239.11", "10.3.239.14", "10.3.239.12", "10.3.239.13"]
 timer = threading.Timer
@@ -28,7 +28,7 @@ def exec_command_ByIP(ip):
     return (output.read())
 
 def httpCheckStatus(ip):
-    conn = httplib.HTTPConnection(devIP, _port_)
+    conn = http.client.HTTPConnection(ip, _port_)
     conn.request("GET", "/")
     return conn.getresponse().read()
 
@@ -80,7 +80,7 @@ def check(inc):
     s.enter(inc, 0, check, (inc,))
     checkByIP(devIP, 'dev');
     checkByIP(stageIP, 'stage');
-    
+
     """
     
 
