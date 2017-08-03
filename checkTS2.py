@@ -1,4 +1,5 @@
-import http.client
+#import http.client
+import httplib
 import os
 import json
 import tool.sendEmail
@@ -28,7 +29,7 @@ def exec_command_ByIP(ip):
     return (output.read())
 
 def httpCheckStatus(ip):
-    conn = http.client.HTTPConnection(ip, _port_)
+    conn = httplib.HTTPConnection(ip, _port_)
     conn.request("GET", "/")
     return conn.getresponse().read()
 
