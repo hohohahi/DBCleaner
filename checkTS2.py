@@ -79,10 +79,9 @@ def assembleEmailBody(rtnCode, rtnMessage):
 def check(inc):
     s.enter(inc, 0, check, (inc,))
     checkByIP(devIP, 'dev');
-
-    """
     checkByIP(stageIP, 'stage');
-
+    
+    """
     
 
     checkByIP(prod_env1_IPs[0], 'Prod Env1 1');
