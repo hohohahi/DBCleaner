@@ -64,7 +64,7 @@ def checkByIP(ip, tag):
     if (_Status_Parse_Normal == rtnCode):
         rtnCode = parseRtnMessage(rtnMessage)
 
-    if (_Status_Parse_Normal != rtnCode):
+    if (_Status_Parse_Normal != rtnCode or _Status_Parse_Error_ != rtnCode):
         title = assembleEmailTitle(tag, ip)
         body = assembleEmailBody(rtnCode, rtnMessage)
         tool.sendEmail.sendEmail(title, body)
