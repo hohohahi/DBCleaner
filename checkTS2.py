@@ -21,7 +21,7 @@ prod_env1_IPs = ["10.3.240.14", "10.3.240.11", "10.3.240.13", "10.3.240.12"]
 prod_env3_IPs = ["10.3.239.11", "10.3.239.14", "10.3.239.12", "10.3.239.13"]
 timer = threading.Timer
 _port_ = 8888
-_check_interval_ = 30
+_check_interval_ = 60
 
 def exec_command_ByIP(ip):
     command = 'curl '+ ip + ':8888  --connect-timeout 5'
@@ -82,9 +82,6 @@ def check(inc):
     checkByIP(devIP, 'dev');
     checkByIP(stageIP, 'stage');
 
-    """
-    
-
     checkByIP(prod_env1_IPs[0], 'Prod Env1 1');
     checkByIP(prod_env1_IPs[1], 'Prod Env1 2');
     checkByIP(prod_env1_IPs[2], 'Prod Env1 3');
@@ -94,8 +91,6 @@ def check(inc):
     checkByIP(prod_env3_IPs[1], 'Prod Env3 2');
     checkByIP(prod_env3_IPs[2], 'Prod Env3 3');
     checkByIP(prod_env3_IPs[3], 'Prod Env3 4');
-"""
-
 
 s = sched.scheduler(time.time,time.sleep)
 
